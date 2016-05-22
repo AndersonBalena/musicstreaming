@@ -1,0 +1,12 @@
+module DatabaseStorage {
+
+	typedef sequence<Object> ObjectArray;
+
+  	interface DatabaseStorage {
+
+    	ObjectArray listMusicsByName(in string name);
+    
+  	};
+
+
+};
