@@ -16,11 +16,15 @@ public interface StreamingInterface {
     @WebMethod
     ArrayList<Music> listMusicsByArtist(String artist);
     @WebMethod
-    String getMusicContent(Music music);
+    String getMusicID3(Music music);
     @WebMethod 
-    int updateMusic(MusicDto musicDto);
+    boolean updateMusic(int musicId, MusicDto musicDto); 
     @WebMethod
-    int removeMusic(Music music);
+    boolean removeMusic(Music music);
     @WebMethod
     ArrayList<Music> listMusicsInFolder(String path);
+    @WebMethod
+    Music getMusicById(int id);
+    @WebMethod
+    Music getLastPlayedMusic();
 }

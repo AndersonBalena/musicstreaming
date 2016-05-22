@@ -1,10 +1,7 @@
 package br.furb.model;
 
-import java.io.Serializable;
-
-public class Music implements Serializable {
+public class Music {
 	
-	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private double duration;
@@ -43,7 +40,7 @@ public class Music implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getArtsit() {
+	public String getArtist() {
 		return this.artist;
 	}
 	public void setArtist(String artist) {
