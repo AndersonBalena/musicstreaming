@@ -1,6 +1,7 @@
 package br.furb.webservice;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.rmi.RemoteException;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -12,19 +13,19 @@ import br.furb.model.MusicDto;
 @SOAPBinding(style = Style.RPC)
 public interface StreamingInterface {
     @WebMethod 
-    ArrayList<Music> listMusicsByName(String name);
+    Music[] listMusicsByName(String name) throws RemoteException;
     @WebMethod
-    ArrayList<Music> listMusicsByArtist(String artist);
+    Music[] listMusicsByArtist(String artist) throws RemoteException;
     @WebMethod
     String getMusicID3(Music music);
     @WebMethod 
-    boolean updateMusic(int musicId, MusicDto musicDto); 
+    boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException; 
     @WebMethod
-    boolean removeMusic(Music music);
+    boolean removeMusic(Music music) throws RemoteException;
     @WebMethod
-    ArrayList<Music> listMusicsInFolder(String path);
+    File[] listMusicsInFolder(String path);
     @WebMethod
-    Music getMusicById(int id);
+    Music getMusicById(int id) throws RemoteException;
     @WebMethod
     Music getLastPlayedMusic();
 }

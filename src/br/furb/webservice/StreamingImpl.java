@@ -1,13 +1,11 @@
 package br.furb.webservice;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-
 import javax.jws.WebService;
 import javax.swing.JOptionPane;
-
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
 import br.furb.rmi.DatabaseStorage;
@@ -21,12 +19,11 @@ public class StreamingImpl implements StreamingInterface {
 	
 	public StreamingImpl() throws MalformedURLException, NotBoundException {
 		try {
-			databaseStorage = RmiClient.getClient("//localhost/MusicStorage");
+			databaseStorage = RmiClient.getClient("//localhost/DatabaseStorage");
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Could not connect to RMI server!");
 		}
 	}
-	
 	
 	@Override
 	public Music getLastPlayedMusic() {
@@ -34,12 +31,12 @@ public class StreamingImpl implements StreamingInterface {
 	}
 	
 	@Override
-	public ArrayList<Music> listMusicsByName(String name) {
+	public Music[] listMusicsByName(String name) throws RemoteException {
 		return databaseStorage.listMusicsByName(name);
 	}
 
 	@Override
-	public ArrayList<Music> listMusicsByArtist(String artist) {
+	public Music[] listMusicsByArtist(String artist) throws RemoteException {
 		return databaseStorage.listMusicsByArtist(artist);
 	}
 
@@ -50,23 +47,23 @@ public class StreamingImpl implements StreamingInterface {
 	}
 
 	@Override
-	public boolean updateMusic(int musicId, MusicDto musicDto) {
+	public boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException {
 		return databaseStorage.updateMusic(musicId, musicDto);
 	}
 
 	@Override
-	public boolean removeMusic(Music music) {
+	public boolean removeMusic(Music music) throws RemoteException {
 		return databaseStorage.removeMusic(music);
 	}
 
 	@Override
-	public ArrayList<Music> listMusicsInFolder(String path) {
-		// TODO Implementar chamada do método do RMI
+	public File[] listMusicsInFolder(String path) {
+		//TODO realizar chamada do método implementado no corba.
 		return null;
 	}
 	
 	@Override 
-	public Music getMusicById(int id) {
+	public Music getMusicById(int id) throws RemoteException {
 		Music music = databaseStorage.getMusicById(id);
 		setLastPlayedMusic(music);
 		return getLastPlayedMusic();

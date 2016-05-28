@@ -7,9 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JOptionPane;
-
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
 
@@ -19,10 +17,12 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	private static Map<Integer, Music> musicas = new HashMap<>();
 	
 	static {
-		musicas.put(1, new Music(1, "Foo - Paranoid - Black Sabbath", 2.00, "./src/resources/Saideira.mp3", "Artist 1"));
-		musicas.put(2, new Music(2, "Smoke on the Water - Deep Purple", 3.00, "./src/resources/Saideira.mp3", "Artist 2"));
-		musicas.put(3, new Music(3, "Foo - Bark at the Moon - Ozzy Osbourne", 2.00, "./src/resources/Saideira.mp3", "Artist 3"));
-		musicas.put(4, new Music(4, "Foo - Saideira - Skank", 8.00, "./src/resources/Saideira.mp3", "Artist 4"));
+		musicas.put(1, new Music(1, "We will rock you", 2.00, "./resources/We will rock you.mp3", "Queen"));
+		musicas.put(2, new Music(2, "We are the champions", 3.00, "./resources/We are the champions.mp3", "Queen"));
+		musicas.put(3, new Music(3, "Radio gaga", 2.00, "./resources/Radio gaga.mp3", "Queen"));
+		musicas.put(4, new Music(4, "I want to break free", 8.00, "./resources/I want to break free.mp3", "Queen"));
+		musicas.put(5, new Music(5, "Don't stop me now", 8.00, "./resources/Don't stop me now.mp3", "Queen"));
+		musicas.put(6, new Music(6, "A kind of magic", 8.00, "./resources/A kind of magic.mp3", "Queen"));
 	}
 	
 	protected DatabaseStorageServer() throws RemoteException {
@@ -30,23 +30,23 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
-		runServer("//localhost/MusicStorage");
+		runServer("//localhost/DatabaseStorage");
 	}
 
 	@Override
-	public ArrayList<Music> listMusicsByName(String name) {
-		ArrayList<Music> musics = new ArrayList<>();
-		for (int i = 1; i < musicas.size(); i++) {
+	public Music[] listMusicsByName(String name) {
+		ArrayList<Music> matchs = new ArrayList<>();
+		for (int i = 1; i <= musicas.size(); i++) {
 			Music music = musicas.get(i);
 			if (music.getName().contains(name)) {
-				musics.add(music);
+				matchs.add(music);
 			}
 		}
-		return musics;
+		return parseToArray(matchs);  
 	}
 
 	@Override
-	public ArrayList<Music> listMusicsByArtist(String artist) {
+	public Music[] listMusicsByArtist(String artist) {
 		ArrayList<Music> musics = new ArrayList<>();
 		for (int i = 1; i < musicas.size(); i++) {
 			Music music = musicas.get(i);
@@ -54,7 +54,7 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 				musics.add(music);
 			}
 		}
-		return musics;
+		return parseToArray(musics);
 	}
 
 	@Override
@@ -97,10 +97,19 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 		return music;
 	}
 	
+	private Music[] parseToArray(ArrayList<Music> matchs) {
+		Music[] musics = new Music[matchs.size()];
+		for (int i = 0; i < matchs.size(); i++) {  
+		    musics[i] = matchs.get(i);  
+		}
+		return musics;
+	}
+	
 	private static void runServer(String url) throws MalformedURLException {
 		try {
 			DatabaseStorage server = new DatabaseStorageServer();
 			Naming.rebind(url, server);
+			System.out.println("Servidor RMI no ar!");
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Could not run RMI server!");
 			re.printStackTrace();

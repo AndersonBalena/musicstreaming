@@ -1,12 +1,17 @@
 package br.furb.model;
 
-public class Music {
+import java.io.Serializable;
+
+public class Music implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private double duration;
 	private String location;
 	private String artist;
+	
+	public Music() {}
 	
 	public Music(int id, String name, double duration, String location, String artist) {
 		this.setId(id);
@@ -45,5 +50,10 @@ public class Music {
 	}
 	public void setArtist(String artist) {
 		this.artist = artist;
+	}
+
+	@Override
+	public String toString() {
+		return "[id=" + id + ", nome=" + name + ", localização=" + location + ", artista=" + artist + "]";
 	}
 }
