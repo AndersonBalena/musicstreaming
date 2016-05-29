@@ -38,7 +38,9 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 		ArrayList<Music> matchs = new ArrayList<>();
 		for (int i = 1; i <= musicas.size(); i++) {
 			Music music = musicas.get(i);
-			if (music.getName().contains(name)) {
+			if (music == null) continue;
+			
+			if (music.getName().toLowerCase().contains(name.toLowerCase())) {
 				matchs.add(music);
 			}
 		}
@@ -68,15 +70,13 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	}
 
 	@Override
-	public boolean removeMusic(Music music) {
-		try {
-			musicas.remove(music);
+	public boolean removeMusic(int musicId) {
+		Music music = getMusicById(musicId);
+		if (music != null) {
+			musicas.remove(musicId);
 			return true;
-		} catch (Exception e) {
-			System.out.println("Não removeu a música");
+		} else 
 			return false;
-		}
-		
 	}
 	
 	@Override

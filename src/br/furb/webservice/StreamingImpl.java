@@ -1,23 +1,30 @@
 package br.furb.webservice;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
 import javax.jws.WebService;
 import javax.swing.JOptionPane;
+
+import org.omg.CORBA.ORBPackage.InvalidName;
+
+import br.furb.corba.FileStorage.FileStorage;
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
 import br.furb.rmi.DatabaseStorage;
+import br.furb.webservice.clientcorba.CorbaClient;
 import br.furb.webservice.clientrmi.RmiClient;
 
 @WebService(endpointInterface = "br.furb.webservice.StreamingInterface")
 public class StreamingImpl implements StreamingInterface {
     
 	private DatabaseStorage databaseStorage;
+	private FileStorage fileStorage;
 	private Music lastPlayedMusic;
 	
-	public StreamingImpl() throws MalformedURLException, NotBoundException {
+	public StreamingImpl() throws MalformedURLException, NotBoundException, InvalidName {
+		fileStorage = CorbaClient.getClient("FileStorage", new String[0]);
 		try {
 			databaseStorage = RmiClient.getClient("//localhost/DatabaseStorage");
 		} catch (RemoteException re) {
@@ -41,25 +48,18 @@ public class StreamingImpl implements StreamingInterface {
 	}
 
 	@Override
-	public String getMusicID3(Music music) {
-		// TODO Implementar chamada do método do corba
-		return null;
-	}
-
-	@Override
 	public boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException {
 		return databaseStorage.updateMusic(musicId, musicDto);
 	}
 
 	@Override
-	public boolean removeMusic(Music music) throws RemoteException {
-		return databaseStorage.removeMusic(music);
+	public boolean removeMusic(int musicId) throws RemoteException {
+		return databaseStorage.removeMusic(musicId);
 	}
 
 	@Override
-	public File[] listMusicsInFolder(String path) {
-		//TODO realizar chamada do método implementado no corba.
-		return null;
+	public String listMusicsInFolder(String path) {
+		return fileStorage.getMusicsInFolder(path);
 	}
 	
 	@Override 
@@ -71,6 +71,11 @@ public class StreamingImpl implements StreamingInterface {
 
 	public void setLastPlayedMusic(Music lastPlayedMusic) {
 		this.lastPlayedMusic = lastPlayedMusic;
+	}
+
+	@Override
+	public double getMusicSize(String path) {
+		return fileStorage.getMusicSize(path);
 	}
 	
 }

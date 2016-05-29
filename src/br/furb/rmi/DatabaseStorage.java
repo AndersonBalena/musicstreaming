@@ -9,6 +9,6 @@ public interface DatabaseStorage extends Remote {
 	public Music[] listMusicsByName(String name) throws RemoteException;
 	public Music[] listMusicsByArtist(String artist) throws RemoteException;
 	public boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException;
-	public boolean removeMusic(Music music) throws RemoteException;
+	public boolean removeMusic(int musicId) throws RemoteException;
 	public Music getMusicById(int id) throws RemoteException;
 }

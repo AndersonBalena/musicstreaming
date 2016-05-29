@@ -1,6 +1,5 @@
 package br.furb.webservice;
 
-import java.io.File;
 import java.rmi.RemoteException;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -17,13 +16,13 @@ public interface StreamingInterface {
     @WebMethod
     Music[] listMusicsByArtist(String artist) throws RemoteException;
     @WebMethod
-    String getMusicID3(Music music);
+    double getMusicSize(String path);
     @WebMethod 
     boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException; 
     @WebMethod
-    boolean removeMusic(Music music) throws RemoteException;
+    boolean removeMusic(int musicId) throws RemoteException;
     @WebMethod
-    File[] listMusicsInFolder(String path);
+    String listMusicsInFolder(String path);
     @WebMethod
     Music getMusicById(int id) throws RemoteException;
     @WebMethod

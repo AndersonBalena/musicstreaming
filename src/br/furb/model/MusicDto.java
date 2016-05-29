@@ -1,12 +1,18 @@
 package br.furb.model;
 
-public class MusicDto {
+import java.io.Serializable;
+
+public class MusicDto implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private double duration;
 	private String location;
 	private String artist;
+	
+	public MusicDto() {
+	}
 	
 	public MusicDto(int id, String name, double duration, String location, String artist) {
 		this.setId(id);
