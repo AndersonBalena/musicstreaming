@@ -1,0 +1,11 @@
+module FileStorage {
+
+
+  interface FileStorage {
+
+    string getMusicsInFolder(in string path);
+    double getMusicSize(in string path);
+  };
+
+
+};
