@@ -14,15 +14,16 @@ import br.furb.model.MusicDto;
 @SuppressWarnings("serial")
 public class DatabaseStorageServer extends UnicastRemoteObject implements DatabaseStorage {
 
+	private static String DEFAULT_PATH = "/home/balena/Música/Queen/";
 	private static Map<Integer, Music> musicas = new HashMap<>();
 	
 	static {
-		musicas.put(1, new Music(1, "We will rock you", 2.00, "./resources/We will rock you.mp3", "Queen"));
-		musicas.put(2, new Music(2, "We are the champions", 3.00, "./resources/We are the champions.mp3", "Queen"));
-		musicas.put(3, new Music(3, "Radio gaga", 2.00, "./resources/Radio gaga.mp3", "Queen"));
-		musicas.put(4, new Music(4, "I want to break free", 8.00, "./resources/I want to break free.mp3", "Queen"));
-		musicas.put(5, new Music(5, "Don't stop me now", 8.00, "./resources/Don't stop me now.mp3", "Queen"));
-		musicas.put(6, new Music(6, "A kind of magic", 8.00, "./resources/A kind of magic.mp3", "Queen"));
+		musicas.put(1, new Music(1, "We will rock you", 2.00, DEFAULT_PATH + "We_will_rock_you.mp3", "Queen"));
+		musicas.put(2, new Music(2, "We are the champions", 3.00, DEFAULT_PATH + "We_are_the_champions.mp3", "Queen"));
+		musicas.put(3, new Music(3, "Radio gaga", 2.00, DEFAULT_PATH + "Radio_ga_ga.mp3", "Queen"));
+		musicas.put(4, new Music(4, "I want to break free", 8.00, DEFAULT_PATH + "I_want_to_break_free.mp3", "Queen"));
+		musicas.put(5, new Music(5, "Don't stop me now", 8.00, DEFAULT_PATH + "Dont_stop_me_now.mp3", "Queen"));
+		musicas.put(6, new Music(6, "A kind of magic", 8.00, DEFAULT_PATH + "A_kind_of_magic.mp3", "Queen"));
 	}
 	
 	protected DatabaseStorageServer() throws RemoteException {

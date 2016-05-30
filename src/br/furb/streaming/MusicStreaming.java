@@ -1,11 +1,16 @@
 package br.furb.streaming;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
+
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
 import br.furb.webservice.StreamingInterface;
@@ -15,7 +20,7 @@ public class MusicStreaming {
 	private static final String DEFAULT_PATH = "./resources/";
 	private static StreamingInterface clientWS;
 	
-	public static void main(String[] args) throws MalformedURLException, RemoteException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		final Scanner in = new Scanner(System.in);
 		clientWS = getClientWS();
 		int option;
@@ -42,6 +47,11 @@ public class MusicStreaming {
 				String param = String.valueOf(in.nextLine());
 				double size = clientWS.getMusicSize(param);
 				println("Tamanho da música: " + size);
+			} else if (option == 6) {
+				println("Digite o id da música:");
+				int id = Integer.parseInt(in.nextLine());
+				Music music = clientWS.getMusicById(id);
+				playMusic(music, in);
 			}
 			int secondOption = showMenuConsultas(in);
 			if (secondOption == 1 || secondOption == 2) {
@@ -59,6 +69,19 @@ public class MusicStreaming {
 			}
 				
 		} while(option != 0);
+	}
+
+	private static void playMusic(Music music, Scanner in) throws IOException, InterruptedException {
+		Process process = Runtime.getRuntime().exec("gst123 " + music.getLocation() + " &");
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		System.out.println("Digite 0 para parar a música");
+		int a = 0;
+		do {
+			System.out.println("Foo");
+			a = Integer.parseInt(in.nextLine());
+		} while ((br.readLine()) != null && a != 0);
+		process.waitFor();
+		process.destroyForcibly();
 	}
 	
 	private static MusicDto getMusicFromForm(Scanner in, Music music) {
@@ -108,10 +131,16 @@ public class MusicStreaming {
 	}
 	
 	private static StreamingInterface getClientWS() throws MalformedURLException {
-		URL url = new URL("http://127.0.0.1:9876/streaming?wsdl");
-	    QName qname = new QName("http://webservice.furb.br/","StreamingImplService");
-	    Service ws = Service.create(url, qname);
-	    return ws.getPort(StreamingInterface.class);
+		try {
+			URL url = new URL("http://127.0.0.1:9876/streaming?wsdl");
+		    QName qname = new QName("http://webservice.furb.br/","StreamingImplService");
+		    Service ws = Service.create(url, qname);
+		    return ws.getPort(StreamingInterface.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível conectar ao servidor WebService!");
+		}
+		return null;
 	}
 	
 }
