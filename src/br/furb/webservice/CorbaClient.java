@@ -1,14 +1,12 @@
-package br.furb.webservice.clientcorba;
+package br.furb.webservice;
 
 import javax.swing.JOptionPane;
-
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
-
 import br.furb.corba.FileStorage.FileStorage;
 import br.furb.corba.FileStorage.FileStorageHelper;
 

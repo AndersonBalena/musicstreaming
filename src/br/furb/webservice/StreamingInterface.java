@@ -14,15 +14,13 @@ public interface StreamingInterface {
     @WebMethod 
     Music[] listMusicsByName(String name) throws RemoteException;
     @WebMethod
-    Music[] listMusicsByArtist(String artist) throws RemoteException;
-    @WebMethod
     double getMusicSize(String path);
     @WebMethod 
     boolean updateMusic(int musicId, MusicDto musicDto) throws RemoteException; 
     @WebMethod
     boolean removeMusic(int musicId) throws RemoteException;
     @WebMethod
-    String listMusicsInFolder(String path);
+    String listMusicsInFolder(String path) throws RemoteException;
     @WebMethod
     Music getMusicById(int id) throws RemoteException;
     @WebMethod
