@@ -4,21 +4,26 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
+import br.furb.time.TimeServerClient;
 import br.furb.webservice.StreamingInterface;
 
 public class MusicStreaming {
 	
 	private static final String DEFAULT_PATH = "/home/balena/Música/Queen/";
 	private static StreamingInterface clientWS;
+	private static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/YYYY - hh:mm:ss");
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		final Scanner in = new Scanner(System.in);
+		println("Hora: "+ formatter.format(TimeServerClient.getServerDate()));
+		
 		clientWS = getClientWS();
 		int option;
 		do {
