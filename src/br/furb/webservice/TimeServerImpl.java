@@ -9,6 +9,7 @@ public class TimeServerImpl implements TimeServerInterface {
    
 	@Override
 	public long getTimeServer() {
+		System.out.println("Recebendo requisição de tempo...");
 		return new Date().getTime();
 	}
 	

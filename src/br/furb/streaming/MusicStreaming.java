@@ -16,17 +16,16 @@ import br.furb.webservice.StreamingInterface;
 
 public class MusicStreaming {
 	
-	private static final String DEFAULT_PATH = "/home/balena/Música/Queen/";
+	private static final String DEFAULT_PATH = "~/Música/Queen/";
 	private static StreamingInterface clientWS;
 	private static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/YYYY - hh:mm:ss");
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		final Scanner in = new Scanner(System.in);
-		println("Hora: "+ formatter.format(TimeServerClient.getServerDate()));
-		
 		clientWS = getClientWS();
 		int option;
 		do {
+			printTime();
 			option = showMenuPrincipal(in);
 			if (option == 0) break;
 			
@@ -46,7 +45,11 @@ public class MusicStreaming {
 				removeMusic(in);
 		} while(option != 0);
 	}
-
+	
+	public static void printTime(){
+		println("Hora: "+ formatter.format(TimeServerClient.getServerDate()));
+	}
+	
 	private static void removeMusic(final Scanner in) throws RemoteException {
 		println("Digite o id da música a ser alterada/excluída:");
 		int id = Integer.parseInt(in.nextLine());

@@ -6,6 +6,7 @@ import org.omg.PortableServer.*;
 
 import br.furb.corba.FileStorage.FileStorage;
 import br.furb.corba.FileStorage.FileStorageHelper;
+import br.furb.streaming.MusicStreaming;
 
 public class FileStorageServer {
   public static void main(String args[]) {
@@ -34,6 +35,7 @@ public class FileStorageServer {
       ncRef.rebind(path, href);
 
       System.out.println("Servidor CORBA está no ar!");
+      MusicStreaming.printTime();
       orb.run();
     } catch (Exception e) {
         System.err.println("ERRO: " + e);

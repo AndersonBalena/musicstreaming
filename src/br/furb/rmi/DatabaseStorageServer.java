@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
+import br.furb.streaming.MusicStreaming;
 
 @SuppressWarnings("serial")
 public class DatabaseStorageServer extends UnicastRemoteObject implements DatabaseStorage {
@@ -96,6 +97,7 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 			DatabaseStorage server = new DatabaseStorageServer();
 			Naming.rebind(url, server);
 			System.out.println("Servidor RMI no ar!");
+			MusicStreaming.printTime();
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Could not run RMI server!");
 			re.printStackTrace();
