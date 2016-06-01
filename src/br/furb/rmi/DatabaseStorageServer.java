@@ -1,5 +1,6 @@
 package br.furb.rmi;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -7,24 +8,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JOptionPane;
+
 import br.furb.model.Music;
 import br.furb.model.MusicDto;
 
 @SuppressWarnings("serial")
 public class DatabaseStorageServer extends UnicastRemoteObject implements DatabaseStorage {
 
-	private static String DEFAULT_PATH = "/home/balena/Música/Queen/";
 	private static Map<Integer, Music> musicas = new HashMap<>();
-	
-	static {
-		musicas.put(1, new Music(1, "We will rock you", 2.00, DEFAULT_PATH + "We_will_rock_you.mp3", "Queen"));
-		musicas.put(2, new Music(2, "We are the champions", 3.00, DEFAULT_PATH + "We_are_the_champions.mp3", "Queen"));
-		musicas.put(3, new Music(3, "Radio gaga", 2.00, DEFAULT_PATH + "Radio_ga_ga.mp3", "Queen"));
-		musicas.put(4, new Music(4, "I want to break free", 8.00, DEFAULT_PATH + "I_want_to_break_free.mp3", "Queen"));
-		musicas.put(5, new Music(5, "Don't stop me now", 8.00, DEFAULT_PATH + "Dont_stop_me_now.mp3", "Queen"));
-		musicas.put(6, new Music(6, "A kind of magic", 8.00, DEFAULT_PATH + "A_kind_of_magic.mp3", "Queen"));
-	}
 	
 	protected DatabaseStorageServer() throws RemoteException {
 		super();
@@ -35,9 +28,15 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	}
 
 	@Override
+	public void addMusic(File file) {
+		musicas.put(musicas.size(), new Music(musicas.size(), file.getName(), file.getAbsolutePath().toString()));
+		System.out.println("Music: " + file.getName() + " adicionada à base.");
+	}
+	
+	@Override
 	public Music[] listMusicsByName(String name) {
 		ArrayList<Music> matchs = new ArrayList<>();
-		for (int i = 1; i <= musicas.size(); i++) {
+		for (int i = 0; i <= musicas.size(); i++) {
 			Music music = musicas.get(i);
 			if (music == null) continue;
 			
@@ -46,18 +45,6 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 			}
 		}
 		return parseToArray(matchs);  
-	}
-
-	@Override
-	public Music[] listMusicsByArtist(String artist) {
-		ArrayList<Music> musics = new ArrayList<>();
-		for (int i = 1; i < musicas.size(); i++) {
-			Music music = musicas.get(i);
-			if (music.getArtist().contains(artist)) {
-				musics.add(music);
-			}
-		}
-		return parseToArray(musics);
 	}
 
 	@Override
@@ -82,7 +69,7 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	
 	@Override
 	public Music getMusicById(int id) {
-		for (int i = 1; i < musicas.size(); i++) {
+		for (int i = 0; i < musicas.size(); i++) {
 			Music music = musicas.get(i);
 			if (music.getId() == id) 
 				return music;
@@ -92,9 +79,7 @@ public class DatabaseStorageServer extends UnicastRemoteObject implements Databa
 	
 	private Music copyFromDto(MusicDto musicDto, Music music) {
 		music.setName(musicDto.getName());
-		music.setDuration(musicDto.getDuration());
 		music.setLocation(musicDto.getLocation());
-		music.setArtist(musicDto.getArtist());
 		return music;
 	}
 	

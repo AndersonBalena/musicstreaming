@@ -1,4 +1,4 @@
-package br.furb.webservice.clientrmi;
+package br.furb.webservice;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 
 import br.furb.rmi.DatabaseStorage;
 
-public class RmiClient {
+public class ClientRmi {
 	
 	public static DatabaseStorage getClient(String url) throws MalformedURLException, RemoteException, NotBoundException {
 		return (DatabaseStorage) Naming.lookup(url);
